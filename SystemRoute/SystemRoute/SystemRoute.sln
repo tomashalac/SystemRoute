@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.87
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemRoute", "SystemRoute\SystemRoute.csproj", "{367A1BD0-D684-4B44-9A15-E571DABC7113}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemRouteTests", "SystemRouteTests\SystemRouteTests.csproj", "{4302F4B1-4CAF-4DAC-95FF-1373C79046B5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{367A1BD0-D684-4B44-9A15-E571DABC7113}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{367A1BD0-D684-4B44-9A15-E571DABC7113}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{367A1BD0-D684-4B44-9A15-E571DABC7113}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{367A1BD0-D684-4B44-9A15-E571DABC7113}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4302F4B1-4CAF-4DAC-95FF-1373C79046B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4302F4B1-4CAF-4DAC-95FF-1373C79046B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4302F4B1-4CAF-4DAC-95FF-1373C79046B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4302F4B1-4CAF-4DAC-95FF-1373C79046B5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7379305B-DD16-40F7-9C77-088151FFB65A}
+	EndGlobalSection
+EndGlobal
