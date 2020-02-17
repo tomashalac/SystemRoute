@@ -205,14 +205,22 @@ namespace SystemRouteTests {
             Assert.AreEqual("1/", "1/2/filename".Build().MoveFolderBack());
             Assert.AreEqual("1/", "1/2/filename.pdf".Build().MoveFolderBack());
             Assert.AreEqual("1/", "1/2/.pdf".Build().MoveFolderBack());
-            Assert.AreEqual("1/2/", "1/2/lel/".Build().MoveFolderBack());
-            Assert.AreEqual(GetPrefix + "/1/2/", "C:/1/2/lel/".Build().MoveFolderBack());
+            Assert.AreEqual("1/2/", "1/2/folder/".Build().MoveFolderBack());
+            Assert.AreEqual(GetPrefix + "/1/2/", "C:/1/2/folder/".Build().MoveFolderBack());
 
             Assert.AreEqual("1/", "1/2/".Build().MoveFolderBack());
             Assert.AreEqual("../", "".Build().MoveFolderBack());
             Assert.AreEqual("../../", "../".Build().MoveFolderBack());
             Assert.AreEqual(GetPrefix + "/", "C:/filename/".Build().MoveFolderBack());
             Assert.AreEqual("", "C:/".Build().MoveFolderBack());
+
+            Assert.AreEqual(GetPrefix + "/1/", "/1/2/filename".Build().MoveFolderBack());
+            Assert.AreEqual(GetPrefix + "/1/", "/1/2/filename.pdf".Build().MoveFolderBack());
+            Assert.AreEqual(GetPrefix + "/1/", "/1/2/.pdf".Build().MoveFolderBack());
+            Assert.AreEqual(GetPrefix + "/1/2/", "/1/2/folder/".Build().MoveFolderBack());
+
+            Assert.AreEqual("/1/2/", "/1/2/folder/".MoveFolderBack());
+            Assert.AreEqual("../../../", "".MoveFolderBack().MoveFolderBack().MoveFolderBack());
         }
 
         [Test]

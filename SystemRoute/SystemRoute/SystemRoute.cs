@@ -174,7 +174,7 @@ namespace SystemRoute {
         public static string MoveFolderBack(this string fullFileName) {
             if (string.IsNullOrEmpty(fullFileName)) return "../";
 
-            string[] paths = fullFileName.GetPaths();
+            string[] paths = Normalize(Path.GetDirectoryName(fullFileName)).Split('/');
             if (paths.Length == 0) return "";
             if (paths[paths.Length - 1] == "..") {
                 return Normalize(string.Join("/", paths) + "/../");
