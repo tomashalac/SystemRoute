@@ -189,7 +189,8 @@ namespace SystemRoute {
         /// <param name="fullFileName">A path to a folder or file already normalized by this class.</param>
         /// <returns></returns>
         public static bool IsAbsolutePath(this string fullFileName) {
-            return Path.IsPathRooted(fullFileName);
+            //for suport windows path on linux systems
+            return (fullFileName.Length >= 2 && fullFileName[1] == ':') || Path.IsPathRooted(fullFileName);
         }
 
         /// <summary>
@@ -230,7 +231,7 @@ namespace SystemRoute {
                     newFullFileName = "C:" + newFullFileName;
                 }
                 //if I am in linux and the path starts with x: I pass it to the linux format
-                if (newFullFileName[1] == ':' && (int)Environment.OSVersion.Platform > 3) {
+                if (newFullFileName.Length >= 2 && newFullFileName[1] == ':' && (int)Environment.OSVersion.Platform > 3) {
                     newFullFileName = newFullFileName.Substring(2);
                 }
 
