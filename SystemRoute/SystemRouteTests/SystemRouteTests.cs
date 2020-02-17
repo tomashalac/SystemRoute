@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System;
 using System.IO;
 using SystemRoute;
 
@@ -6,6 +7,14 @@ namespace SystemRouteTests {
     public class SystemRouteTests {
 
         public static string TestAbsolutePath = Path.GetTempPath().Replace("\\", "/");
+
+        public static string GetPrefix {
+            get {
+                if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                    return "C:";
+                return "";
+            }
+        }
 
         [Test]
         public void Unit_ToAbsolutePathSubFolderFile() {
@@ -53,12 +62,12 @@ namespace SystemRouteTests {
 
             Assert.AreEqual("folder3/filename.pdf", @"folder3/filename.pdf".Build());
             Assert.AreEqual("folder3/filename.pdf", @"folder3\filename.pdf".Build());
-            Assert.AreEqual("C:/folder3/filename.pdf", @"\folder3\filename.pdf".Build());
+            Assert.AreEqual(GetPrefix + "/folder3/filename.pdf", @"\folder3\filename.pdf".Build());
 
 
-            Assert.AreEqual("C:/folder3/filename.pdf", @"C:\folder3/filename.pdf".Build());
-            Assert.AreEqual("C:/folder3/filename.pdf2", @"C:\folder3\filename.pdf2".Build());
-            Assert.AreEqual("C:/folder3/filename.txt", @"C:\folder3\\filename.txt".Build());
+            Assert.AreEqual(GetPrefix + "/folder3/filename.pdf", @"C:\folder3/filename.pdf".Build());
+            Assert.AreEqual(GetPrefix + "/folder3/filename.pdf2", @"C:\folder3\filename.pdf2".Build());
+            Assert.AreEqual(GetPrefix + "/folder3/filename.txt", @"C:\folder3\\filename.txt".Build());
         }
 
         [Test]
@@ -68,10 +77,10 @@ namespace SystemRouteTests {
             Assert.AreEqual("path/filename.png", "path/".Build("/filename.png"));
             Assert.AreEqual("path/filename.png", "path".Build("/filename.png"));
 
-            Assert.AreEqual("C:/path/filename.png", "/path".Build("filename.png"));
-            Assert.AreEqual("C:/path/filename.png", "/path/".Build("filename.png"));
-            Assert.AreEqual("C:/path/filename.png", "/path/".Build("/filename.png"));
-            Assert.AreEqual("C:/path/filename.png", "/path".Build("/filename.png"));
+            Assert.AreEqual(GetPrefix + "/path/filename.png", "/path".Build("filename.png"));
+            Assert.AreEqual(GetPrefix + "/path/filename.png", "/path/".Build("filename.png"));
+            Assert.AreEqual(GetPrefix + "/path/filename.png", "/path/".Build("/filename.png"));
+            Assert.AreEqual(GetPrefix + "/path/filename.png", "/path".Build("/filename.png"));
 
 
             Assert.AreEqual("la/path/filename.png", "la/path".Build("filename.png"));
@@ -86,10 +95,10 @@ namespace SystemRouteTests {
             Assert.AreEqual("folder1/folder2/folder3/", "folder1/folder2/folder3/".Build().GetPath());
             Assert.AreEqual("folder1/folder2/", "folder1/folder2/folder3".Build().GetPath());
 
-            Assert.AreEqual("C:/folder1/folder2/folder3/", "/folder1/folder2/folder3/folder1.jpg".Build().GetPath());
-            Assert.AreEqual("C:/folder1/folder2/folder3/", "/folder1/folder2/folder3/folder1.".Build().GetPath());
-            Assert.AreEqual("C:/folder1/folder2/folder3/", "/folder1/folder2/folder3/".Build().GetPath());
-            Assert.AreEqual("C:/folder1/folder2/", "/folder1/folder2/folder3".Build().GetPath());
+            Assert.AreEqual(GetPrefix + "/folder1/folder2/folder3/", "/folder1/folder2/folder3/folder1.jpg".Build().GetPath());
+            Assert.AreEqual(GetPrefix + "/folder1/folder2/folder3/", "/folder1/folder2/folder3/folder1.".Build().GetPath());
+            Assert.AreEqual(GetPrefix + "/folder1/folder2/folder3/", "/folder1/folder2/folder3/".Build().GetPath());
+            Assert.AreEqual(GetPrefix + "/folder1/folder2/", "/folder1/folder2/folder3".Build().GetPath());
         }
 
 
@@ -104,10 +113,10 @@ namespace SystemRouteTests {
             Assert.AreEqual("homefolder/2/3/", "homefolder/2/3/".Build().GetAsPath());
             Assert.AreEqual("homefolder/2/3/", "homefolder/2/3".Build().GetAsPath());
 
-            Assert.AreEqual("C:/homefolder/2/3/folder4.txt/", "/homefolder/2/3/folder4.txt".Build().GetAsPath());
-            Assert.AreEqual("C:/homefolder/2/3/folder4.test/", "/homefolder/2/3/folder4.test".Build().GetAsPath());
-            Assert.AreEqual("C:/homefolder/2/3/", "/homefolder/2/3/".Build().GetAsPath());
-            Assert.AreEqual("C:/homefolder/2/3/", "/homefolder/2/3".Build().GetAsPath());
+            Assert.AreEqual(GetPrefix + "/homefolder/2/3/folder4.txt/", "/homefolder/2/3/folder4.txt".Build().GetAsPath());
+            Assert.AreEqual(GetPrefix + "/homefolder/2/3/folder4.test/", "/homefolder/2/3/folder4.test".Build().GetAsPath());
+            Assert.AreEqual(GetPrefix + "/homefolder/2/3/", "/homefolder/2/3/".Build().GetAsPath());
+            Assert.AreEqual(GetPrefix + "/homefolder/2/3/", "/homefolder/2/3".Build().GetAsPath());
 
             Assert.AreEqual("myfolder/path/game.pdf/folder4.png/", "myfolder/path/game.pdf/folder4.png".Build().GetAsPath());
             Assert.AreEqual("myfolder/path/game.pdf/folder4.test/", "myfolder/path/game.pdf/folder4.test".Build().GetAsPath());
@@ -129,8 +138,14 @@ namespace SystemRouteTests {
         public void Units_GetPaths() {
             Assert.AreEqual(new string[] { "one", "two" }, "one/two/three".Build().GetPaths());
             Assert.AreEqual(new string[] { "one", "two", "three" }, "one/two/three/".Build().GetPaths());
-            Assert.AreEqual(new string[] { "C:", "one", "two", "three" }, "/one/two/three/".Build().GetPaths());
-            Assert.AreEqual(new string[] { "C:", "one", "two", "three" }, "/one/two/three/filename".Build().GetPaths());
+
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT) {
+                Assert.AreEqual(new string[] { "C:", "one", "two", "three" }, "/one/two/three/".Build().GetPaths());
+                Assert.AreEqual(new string[] { "C:", "one", "two", "three" }, "/one/two/three/filename".Build().GetPaths());
+            } else {
+                Assert.AreEqual(new string[] { "one", "two", "three" }, "/one/two/three/".Build().GetPaths());
+                Assert.AreEqual(new string[] { "one", "two", "three" }, "/one/two/three/filename".Build().GetPaths());
+            }
 
             Assert.AreEqual(new string[] { }, "".Build().GetPaths());
         }
@@ -191,12 +206,12 @@ namespace SystemRouteTests {
             Assert.AreEqual("1/", "1/2/filename.pdf".Build().MoveFolderBack());
             Assert.AreEqual("1/", "1/2/.pdf".Build().MoveFolderBack());
             Assert.AreEqual("1/2/", "1/2/lel/".Build().MoveFolderBack());
-            Assert.AreEqual("C:/1/2/", "C:/1/2/lel/".Build().MoveFolderBack());
+            Assert.AreEqual(GetPrefix + "/1/2/", "C:/1/2/lel/".Build().MoveFolderBack());
 
             Assert.AreEqual("1/", "1/2/".Build().MoveFolderBack());
             Assert.AreEqual("../", "".Build().MoveFolderBack());
             Assert.AreEqual("../../", "../".Build().MoveFolderBack());
-            Assert.AreEqual("C:/", "C:/filename".Build().MoveFolderBack());
+            Assert.AreEqual(GetPrefix + "/", "C:/filename".Build().MoveFolderBack());
             Assert.AreEqual("", "C:/".Build().MoveFolderBack());
         }
 
