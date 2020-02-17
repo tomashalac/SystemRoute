@@ -70,7 +70,7 @@ namespace SystemRoute {
 
         public static string[] GetPaths(this string fullFileName) {
             if (string.IsNullOrEmpty(fullFileName)) return new string[0];
-            return Normalize(Path.GetDirectoryName(fullFileName)).Split('/');
+            return Normalize(Path.GetDirectoryName(fullFileName)).Split('/', StringSplitOptions.RemoveEmptyEntries);
         }
 
         /// <summary>
@@ -175,6 +175,7 @@ namespace SystemRoute {
             if (string.IsNullOrEmpty(fullFileName)) return "../";
 
             string[] paths = fullFileName.GetPaths();
+            if (paths.Length == 0) return "";
             if (paths[paths.Length - 1] == "..") {
                 return Normalize(string.Join("/", paths) + "/../");
             } else {

@@ -211,7 +211,7 @@ namespace SystemRouteTests {
             Assert.AreEqual("1/", "1/2/".Build().MoveFolderBack());
             Assert.AreEqual("../", "".Build().MoveFolderBack());
             Assert.AreEqual("../../", "../".Build().MoveFolderBack());
-            Assert.AreEqual(GetPrefix + "/", "C:/filename".Build().MoveFolderBack());
+            Assert.AreEqual(GetPrefix + "/", "C:/filename/".Build().MoveFolderBack());
             Assert.AreEqual("", "C:/".Build().MoveFolderBack());
         }
 
