@@ -54,7 +54,7 @@ namespace SystemRoute {
             if (fullFileName.IsPath()) {
                 return fullFileName;
             }
-            //para forsar la direccion a un directorio y despues devolverlo como un directorio
+            //to force the path to a directory and then return it as a directory
             return Normalize(Path.GetDirectoryName(fullFileName + "/") + "/");
         }
 
@@ -145,7 +145,6 @@ namespace SystemRoute {
             File.Delete(fullFileName);
         }
 
-
         public static string SetName(this string path, string name) {
             return SetFullFileName(Path.Combine(path.GetPath(), name));
         }
@@ -206,7 +205,7 @@ namespace SystemRoute {
             if (IsAbsolutePath(fullFileName)) {
                 FolderPath = GetPath(fullFileName);
             } else {
-                //si tiene una sub carpeta en el relativo
+                //if you have a subfolder in the relative path
                 if (fullFileName.Contains("/")) {
                     FolderPath = Path.Combine(absoluteDefault, fullFileName.GetPath());
                 } else {
@@ -226,12 +225,17 @@ namespace SystemRoute {
 
             if (IsAbsolutePath(newFullFileName)) {
 
-                //si empieza con / por linux lo paso a windows
+                //if I am in windows and the path starts with / I pass it to the windows format
                 if (newFullFileName[0] == '/' && (int)Environment.OSVersion.Platform <= 3) {
                     newFullFileName = "C:" + newFullFileName;
                 }
-                //si tiene un path me aseguro que tenga el formato correcto y que sea valido
-                //tambien lo limpio, por ejemplo si tengo 'C:/aw//a', lo pasa a 'C:/aw/a'
+                //if I am in linux and the path starts with x: I pass it to the linux format
+                if (newFullFileName[1] == ':' && (int)Environment.OSVersion.Platform > 3) {
+                    newFullFileName = newFullFileName.Substring(2);
+                }
+
+                //if it is path I make sure it has the correct format and is valid
+                //I also clean it, for example if I have 'C:/folder//filename', pass it to 'C:/folder/filename'
                 newFullFileName = Normalize(Path.GetFullPath(newFullFileName));
             }
 
